@@ -1,0 +1,650 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.listContainer {
+  overflow: hidden;
+  width: 20%;
+}
+
+/* ############### user box style ############### */
+
+.user {
+  display: flex;
+  width: 100%;
+  height: 10%;
+  background: #e3f6fc;
+  border-radius: 0 0 0.729vw 0.729vw;
+}
+
+.profileImg {
+  margin-left: 1.823vw;
+  margin-top: 1.4vw;
+  width: 2.292vw;
+  height: 2.292vw;
+  border-radius: 50rem;
+  border: 0.104vw solid #f3ba4a;
+}
+
+
+.name {
+  margin-left: 0.781vw;
+  margin-top: 1.51vw;
+
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.729vw;
+  line-height: 1.094vw;
+  color: #52585d;
+}
+
+.statusView {
+  display: flex;
+  align-items: center;
+  width: 4.583vw;
+  height: 1.042vw;
+  margin-left: 0.781vw;
+  margin-top: 0.104vw;
+
+  color: #fff;
+  text-align: center;
+  line-height: 0.7vw;
+  background: #6588de;
+  border-radius: 0.729vw;
+}
+
+.statusDot {
+  width: 0.417vw;
+  height: 0.417vw;
+  margin: 0.313vw 0.417vw 0.313vw 0.313vw;
+
+  background: #f3ba4a;
+  border-radius: 0.729vw;
+  z-index: 2;
+}
+
+.statusText {
+  margin-top: -0.104vw;
+  font-size: 0.8vw;
+}
+
+.expendmore {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 0.26vw;
+  height: 1.094vw;
+  margin-top: 1.563vw;
+  margin-left: 5.646vw;
+}
+
+.expendmore .expendmoreDot {
+  width: 0.26vw;
+  height: 0.26vw;
+  border-radius: 50%;
+  background-color: #6588de;
+}
+
+/* ############### People box style ############### */
+.friendList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: scroll;
+  padding-top: 1.4vw;
+  width: 100%;
+  height: 89%;
+  margin-top: 2.6%;
+  padding-bottom: 4.427vw;
+
+  background: #e3f6fc;
+  border-radius: 0.729vw 0 0px 0px;
+}
+
+#friendListScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+#searchScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+#friends {
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 2.083vw;
+  width: 18.146vw;
+  height: 3.854vw;
+}
+
+#friends .profileImg {
+  margin: 0.781vw 0.729vw 0.781vw 0.781vw;
+}
+
+#friends .name {
+  margin-top: 0.938vw;
+  margin-left: 0;
+  text-align: left;
+
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.625vw;
+  line-height: 0.938vw;
+}
+
+#friends .statusView {
+  margin: 0;
+}
+
+.selected {
+  width: 16.146vw;
+  height: 3.854vw;
+
+  background: #6588de;
+  box-shadow: 0px 0.417vw 2.083vw rgba(0, 72, 251, 0.3);
+  border-radius: 0.729vw;
+}
+
+.selected .profileImg {
+  margin: 0.781vw 0.729vw 0.781vw 0.781vw;
+}
+
+.selected .name {
+  color: #fff;
+}
+.selected .lastMessage {
+  color: #fff;
+}
+
+.selected .date {
+  color: #fff;
+}
+
+.lastMessage {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 0.521vw;
+  line-height: 0.781vw;
+  margin-top: 0.156vw;
+}
+
+.dateAndUnread {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+  left: 14.74vw;
+  margin-top: 1.146vw;
+}
+
+.date {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.521vw;
+  line-height: 0.625vw;
+  /* identical to box height */
+
+  text-align: right;
+}
+
+.unread {
+  display: flex;
+  justify-content: space-around;
+  width: 0.677vw;
+  height: 0.26vw;
+  margin-top: 0.573vw;
+}
+
+.greenDot {
+  width: 0.26vw;
+  height: 0.26vw;
+  border-radius: 50%;
+
+  background: #46d362;
+}
+
+.searchField {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  width: 20%;
+  height: 80%;
+  top: 11%;
+  z-index: 5;
+  border-radius: 0.729vw 0.729vw 0px 0px;
+  overflow-y: scroll;
+
+  background: #e3f6fc;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  width: 20%;
+  height: 4.427vw;
+  bottom: 0;
+  z-index: 7;
+  background: #e3f6fc;
+
+  box-shadow: 0 -0.052vw 0.156vw -0.104vw black;
+}
+
+.itemsOfNav {
+  display: flex;
+  justify-content: space-around;
+  width: 90%;
+  height: 70%;
+}
+
+.itemsOfNav .item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 2.604vw;
+  height: 2vw;
+  padding: 0;
+}
+
+.item img {
+  width: 1.442vw;
+  height: 1.442vw;
+  margin: 0;
+  padding: 0;
+}
+
+.selectorOfItems {
+  position: absolute;
+  left: 1.3vw;
+  width: 2.604vw;
+  height: 0.156vw;
+  background: #6588de;
+  border-radius: 0.781vw 0.781vw 0px 0px;
+}
+
+.searchFriend {
+  margin-bottom: 2.5vw;
+  margin-top: 2vw;
+  outline: none;
+  border: none;
+  width: 80%;
+  height: 1.7vw;
+  border-radius: 0.7vw;
+  padding-left: 1.2vw;
+}
+
+.chatAndMedia {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  width: 14%;
+  height: 5%;
+  left: 50%;
+  top: 3%;
+  background: #fdfdfd;
+  border: 0.052vw solid #f8f1f1;
+  box-sizing: border-box;
+  box-shadow: 0px 0.417vw 2.083vw rgba(0, 0, 0, 0.1);
+  border-radius: 0.729vw;
+}
+
+.chatBtn {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  z-index: 3;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1.1vw;
+}
+
+.mediaBtn {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  right: 0%;
+  z-index: 3;
+  outline: none;
+  border: none;
+  font-size: 1.1vw;
+
+
+  background-color: transparent;
+}
+
+.chatAndMediaSelector {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  z-index: 2;
+  background: #6588de;
+  border-radius: 0.729vw;
+}
+
+.chatSpace {
+  width: 80%;
+  height: 100%;
+  background-color: transparent;
+}
+
+.chatSpaceTop {
+  width: 100%;
+  height: 11%;
+
+  background-color: transparent;
+}
+
+.messageField {
+  width: 100%;
+  height: 80%;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: flex-end; */
+  overflow-y: auto;
+
+  background-color: transparent;
+}
+
+.messageField::-webkit-scrollbar{
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 0.7vw;
+}
+
+.messageField::-webkit-scrollbar-track{
+  background-color: #b3b3b370;
+  border-radius: 3vw;
+}
+
+.messageField::-webkit-scrollbar-thumb{
+  background-color: #f3ba4a;
+  border-radius: 3vw;
+}
+
+/* ######################   Friends messages   ##################### */
+
+.friendMessage {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+  height: max-content;
+  background-color: transparent;
+}
+
+.friendsName {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  margin-bottom: 0.260vw;
+  height: max-content;
+  background-color: transparent;
+}
+
+.friendNameLeft {
+  width: 3.646vw;
+}
+
+.imgAndMsgBox {
+  display: flex;
+  width: 100%;
+  height: max-content;
+
+  background-color: transparent;
+}
+
+.imgBox {
+  width: 12%;
+  margin-right: 0.365vw;
+  height: max-content;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.imgBox img {
+  width: 2.292vw;
+  height: 2.292vw;
+
+  margin-left: 3vw;
+  border-radius: 100%;
+  background-blend-mode: normal;
+  border: 0.104vw solid #f7b6b4;
+}
+
+.msgBox {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  height: max-content;
+  padding: 0.521vw 0.781vw;
+  width: max-content;
+  max-width: 50%;
+  margin-bottom: 0.521vw;
+
+  background-color: #e3f6fc;
+  border-radius: 0px 0.729vw 0.729vw 0.729vw;
+}
+
+.msgContainer{
+  width: 100%;
+}
+
+.msg {
+  height: max-content;
+  text-align: start;
+  background: transparent;
+  font-size: 1.1vw;
+}
+
+.msgDate {
+  width: 100%;
+  height: 0.625vw;
+  text-align: end;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.521vw;
+  line-height: 0.625vw;
+  /* identical to box height */
+
+  text-align: right;
+
+  color: #6588de;
+
+  opacity: 0.6;
+}
+
+#friendNextMsg .msgBox{
+  margin-left: 9.1vw;
+}
+
+/* #############################################  */
+
+/* ######################   Current user messages   ##################### */
+
+#myItems .myNameRight {
+  width: 3.646vw;
+  height: 100%;
+}
+#myItems .myName {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.260vw;
+  float: left;
+  width: 100%;
+}
+
+#myItems .imgAndMsgBox{
+  justify-content: flex-end;
+}
+
+#myItems .imgBox {
+  margin-left: 0.365vw;
+  display: flex;
+  justify-content: flex-start;
+}
+
+#myItems .imgBox img {
+  margin-left: 0;
+}
+
+#myItems .msgBox {
+  background: #f3ba4a;
+  border-radius: 0.729vw 0px 0.729vw 0.729vw;
+}
+
+
+#myItems .msgContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#nextMsg .msgContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#nextMsg .msgBox {
+  margin-right: 9.1vw;
+
+  background: #f3ba4a;
+  border-radius: 0.729vw 0px 0.729vw 0.729vw;
+}
+
+/* ######################################################  */
+
+.inputBox {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: 75%;
+  height: 5%;
+  bottom: 1.042vw;
+  right: 2.604vw;
+  background-color: transparent;
+}
+
+.expendmoreOfField {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 0.26vw;
+  height: 1.094vw;
+}
+
+.expendmoreOfField .expendmoreDot {
+  width: 0.26vw;
+  height: 0.26vw;
+  border-radius: 50%;
+  background-color: #6588de;
+}
+
+.inputField {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  height: 100%;
+  margin-left: 1.563vw;
+
+  background: #fdfdfd;
+  border: 0.052vw solid rgba(150, 169, 186, 0.7);
+  box-sizing: border-box;
+  border-radius: 0.729vw;
+}
+
+.attachmentIcon {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin-left: 1.3%;
+  height: 100%;
+
+}
+
+.voiceIcon {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin-left: 1.3%;
+}
+
+.attachmentIcon img, .voiceIcon img {
+  width: 1.1vw;
+}
+
+.inputElement {
+  width: 85%;
+  height: 100%;
+  margin-left: 1.3%;
+  outline: none;
+  border: none;
+  font-size: 1.1vw;
+
+  background-color: transparent;
+}
+
+.sendBtn {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 8%;
+  margin-left: 1%;
+  height: 100%;
+  padding: 0.781vw;
+  outline: none;
+  border: none;
+
+  background: #6588de;
+  border-radius: 0.729vw;
+}
+
+.sendBtn p {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.9vw;
+  line-height: 18px;
+  /* identical to box height */
+
+  color: #fdfdfe;
+}
+
+.sendBtn img {
+  width: 1.2vw;
+}
