@@ -10,7 +10,9 @@ import {useHistory} from "react-router-dom"
 import {io, Socket} from "socket.io-client"
 
 function Form({sendId}) {
-  const socket = io("http://localhost:5000")
+  const socket = io("http://localhost:5000",{
+    path:"",
+  })
 
   const [disable,
     setDisable] = useState(false)

@@ -41,31 +41,30 @@ function Profile({userId}) {
     setFriendListFetched] = useState(false)
   const getUrl = window.location.href
   const [msgCount, setMsgCount] = useState(0)
-
-  const id = window.location.href.slice(30)
-
-  
-  const socket = socketClient("http://localhost:5000/profile",{
-      path:""
-    })
-
+  const [socket, setSocket] = useState(socketClient("http://localhost:5000/profile",{
+    path:"",
+  }))
+  const id = window.location.href.slice(30)  
+ 
   useEffect(() => {
+    const socket = socketClient("http://localhost:5000/profile",{
+      path:"",
+    })  
     socket.emit("profile", {userId: id})
     socket.on("profiledata",(data)=>{
       setUser(data.userData)
       setStatus(data.status)
     })
-
     socket.emit("friends",id)
     socket.on("getFriends", (data)=>{
       setFriendList(data)
       setFriendListFetched(true)
     })
     
-  }, [])
+  },[]) 
 
+ 
   useEffect(() => {
-
     if (friendList.length !== 0 && friendSelect!=-1) {
       const user_id = userId
       const friend_id = friendList[friendSelect]._id
@@ -74,14 +73,18 @@ function Profile({userId}) {
         friend_id: friendList[friendSelect]._id
       })
       socket.on("reciveAllMessages", data => {
-        console.log(data);
         setMessages(data)
         setMessagesFetched(true)
       })
+      console.log(messages) 
+      
     }
-    
   }, [friendSelect,msgCount])
 
+  function selectFriend(index){
+    setFriendSelect(index)
+  }
+  
 //  ################## data fetching with socket.io ###############
 
 
@@ -101,8 +104,9 @@ function Profile({userId}) {
   const [message,
     setMessage] = useState("")
   let sendMessage = () => {
-    setMsgCount(msgCount+1)
-    if (foundList && friendSelect != -1) {
+    setMessage("")
+    setMsgCount(msgCount+1) 
+    if (foundList) {
       console.log("clicked")
       let friend_id;
       if (itemSelector.selected === "search" && foundList.length !== 0) {
@@ -139,11 +143,15 @@ function Profile({userId}) {
     }
     socket.on("msgSent", (res)=>{
       let msg = messages
-      msg.push(res.message.text[0])
+      msg.push(res.message.text)
       setMessages(msg)
       console.log(res) 
-    })
-    console.log(messages)
+    }) 
+    
+  }
+
+  function scrollTo(e){
+    console.log(e)
   }
 
   
@@ -200,7 +208,7 @@ function Profile({userId}) {
                 key={friendList.indexOf(obj)}
                 id="friends"
                 onClick={() => {
-                  setFriendSelect(friendList.indexOf(obj))
+                  selectFriend(friendList.indexOf(obj))
                 }}>
                 <img src={userImg} alt="Profile Img" className="profileImg"/>
                 <div className="nameAndStatus">
@@ -295,10 +303,9 @@ function Profile({userId}) {
             ? ""
             : messages.map((obj) => {
               if (obj.author_id === user._id) {
-                console.log("aaa");
                 if (messagesFetched) {
                   return (messages.indexOf(obj) === 0
-                    ? <div className="myMessage" id="myItems">
+                    ? <div className="myMessage" id="myItems" key={obj._id}>
                         <h4 className="myName">
                           {user.Name}
                           <div className="myNameRight"></div>
@@ -319,7 +326,7 @@ function Profile({userId}) {
                       </div>
 
                     : (messages[(messages.indexOf(obj)) - 1].author_id === obj.author_id)
-                      ? <div id="nextMsg">
+                      ? <div id="nextMsg" key={obj._id}>
                           <div className="msgContainer">
                             <div className="msgBox">
                               <p className="msg">
@@ -330,7 +337,7 @@ function Profile({userId}) {
                           </div>
                         </div>
 
-                      : <div className="myMessage" id="myItems">
+                      : <div className="myMessage" id="myItems"  key={obj._id}>
                         <h4 className="myName">
                           {user.Name}
                           <div className="myNameRight"></div>
@@ -357,7 +364,7 @@ function Profile({userId}) {
                   return (messages.indexOf(obj) === 0
                     ? ""
                     : messages[messages.indexOf(obj) - 1].author_id === obj.author_id
-                      ? <div className="msgContainer" id='friendNextMsg'>
+                      ? <div className="msgContainer" id='friendNextMsg'  key={obj._id}>
                           <div className="msgBox">
                             <p className="msg">
                               {obj.value}
