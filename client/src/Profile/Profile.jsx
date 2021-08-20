@@ -36,6 +36,8 @@ function Profile({userId}) {
     setMessages] = useState([])
   const [messagesFetched,
     setMessagesFetched] = useState(false)
+  const [message,
+    setMessage] = useState("")
   // const [friendListFetched,
   //   setFriendListFetched] = useState(false)
   const [msgCount, setMsgCount] = useState(0)
@@ -68,7 +70,7 @@ function Profile({userId}) {
       // setFriendListFetched(true)
     })    
     
-  },[]) 
+  },[id,socket]) 
 
  
   useEffect(() => {
@@ -83,7 +85,7 @@ function Profile({userId}) {
       })
       console.log(messages)  
     }
-  }, [friendSelect,msgCount])
+  }, [friendSelect,msgCount,friendList,socket,message,messages,user._id]) 
 
   function selectFriend(index){
     setFriendSelect(index)
@@ -109,10 +111,8 @@ function Profile({userId}) {
       setfoundList([])
     }
 
-  }, [searchFriend.Name])
+  }, [searchFriend.Name,socket])
 
-  const [message,
-    setMessage] = useState("")
   let sendMessage = () => {
     setMessage("")
     setMsgCount(msgCount+1)
@@ -315,8 +315,7 @@ function Profile({userId}) {
           {!messagesFetched
             ? ""
             : messages.map((obj) => {
-              if (obj.author_id === user._id) {
-                if (messagesFetched) {
+              if (obj.author_id === user._id && messagesFetched) {
                   return (messages.indexOf(obj) === 0
                     ? <div className="myMessage" id="myItems" key={obj._id}>
                         <h4 className="myName">
@@ -368,8 +367,8 @@ function Profile({userId}) {
                             <img src={userImg} alt=""/>
                           </div>
                         </div>
-                      </div>)
-                }
+                      </div>
+                  )
 
               } else {
                 if (messagesFetched && messages.length > 0) {
@@ -426,7 +425,6 @@ function Profile({userId}) {
               value={message}
               onChange={(e) => {
               setMessage(e.target.value)
-              require=true
             }}/>
             <button className="sendBtn" onClick={sendMessage}>
               <p>Send</p><img src={sendIcon} alt=""/></button>

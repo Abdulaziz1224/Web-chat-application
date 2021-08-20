@@ -151,7 +151,7 @@ function Form({sendId}) {
         </div>
 
         <div className={moving}>
-          <h1 className={h1Anime}></h1>
+          <h1 className={h1Anime}>{}</h1>
           <p id={pAnime} className="textOfForm"></p>
           <button className={btnAnime} onClick={() => setSignin(!signin)}></button>
         </div>
