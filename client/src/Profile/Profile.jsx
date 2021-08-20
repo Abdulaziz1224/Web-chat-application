@@ -271,6 +271,7 @@ function Profile({userId}) {
                 </div>
               )
             }
+            return("")
           })
 }
         </div>
@@ -406,6 +407,7 @@ function Profile({userId}) {
                 }
 
               }
+              return("")
             })}
 
         </section>
