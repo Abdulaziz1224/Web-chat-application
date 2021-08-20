@@ -4,18 +4,18 @@ import facebook from "../assets/facebook.svg"
 import google from "../assets/google.svg"
 import linkedin from "../assets/linkedin.svg"
 import lock from "../assets/lock.png"
-import {useState, useEffect} from "react"
+import {useState} from "react"
 import axios from "axios"
 import {useHistory} from "react-router-dom"
-import {io, Socket} from "socket.io-client"
+import {io} from "socket.io-client"
+
 
 function Form({sendId}) {
-  const socket = io("http://localhost:5000",{
+  const socket = io("https://web-chat-application-1.herokuapp.com/",{
     path:"",
   })
+  // https://web-chat-application-1.herokuapp.com
 
-  const [disable,
-    setDisable] = useState(false)
 
   let history = useHistory()
   const [signinEmail,
@@ -49,7 +49,7 @@ function Form({sendId}) {
     setregPassword] = useState("")
   let register = () => {
     axios
-      .post("http://localhost:5000/signup", {
+      .post("https://web-chat-application-1.herokuapp.com/signup", {
       imageUrl: "",
       Name: regName,
       email: regEmail,

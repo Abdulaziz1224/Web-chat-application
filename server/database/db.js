@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const {userSchema, messageSchema} = require("./schema")
 
-mongoose.connect("mongodb://localhost:27017/chatapp", {
+mongoose.connect("mongodb+srv://Abdulaziz1224:Langar-24@cluster0.oqoxq.mongodb.net/web-chat-database?retryWrites=true&w=majority", {
     useNewUrlParser:true, 
     useUnifiedTopology: true,
     useCreateIndex: true,

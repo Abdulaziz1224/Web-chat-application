@@ -1,6 +1,5 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
-import axios from 'axios'
 import socketClient from "socket.io-client"
 
 import "./Profile.css"
@@ -37,37 +36,43 @@ function Profile({userId}) {
     setMessages] = useState([])
   const [messagesFetched,
     setMessagesFetched] = useState(false)
-  const [friendListFetched,
-    setFriendListFetched] = useState(false)
-  const getUrl = window.location.href
+  // const [friendListFetched,
+  //   setFriendListFetched] = useState(false)
   const [msgCount, setMsgCount] = useState(0)
-  const [socket, setSocket] = useState(socketClient("http://localhost:5000/profile",{
+  const [socket] = useState(socketClient("https://web-chat-application-1.herokuapp.com/profile",{
     path:"",
   }))
-  const id = window.location.href.slice(30)  
+  const [id] = useState(window.location.href.slice(-24))
  
+  // const socket = socketClient("https://web-chat-application-1.herokuapp.com/profile",{
+  //   path:"",
+  // })
+  socket.on("connect",()=>{
+    console.log("2222222222")
+  }) 
+  
   useEffect(() => {
-    const socket = socketClient("http://localhost:5000/profile",{
-      path:"",
-    })  
-    socket.emit("profile", {userId: id})
+    socket.on("connect",()=>{
+      console.log(socket.disconnected)
+    })
+    socket.emit("user", {userId: id})
     socket.on("profiledata",(data)=>{
       setUser(data.userData)
       setStatus(data.status)
+      console.log(data)
     })
+
     socket.emit("friends",id)
     socket.on("getFriends", (data)=>{
       setFriendList(data)
-      setFriendListFetched(true)
-    })
+      // setFriendListFetched(true)
+    })    
     
   },[]) 
 
  
   useEffect(() => {
-    if (friendList.length !== 0 && friendSelect!=-1) {
-      const user_id = userId
-      const friend_id = friendList[friendSelect]._id
+    if (friendList.length !== 0 && friendSelect!==-1) {
       socket.emit("allMessages", {
         user_id: user._id,
         friend_id: friendList[friendSelect]._id
@@ -76,8 +81,7 @@ function Profile({userId}) {
         setMessages(data)
         setMessagesFetched(true)
       })
-      console.log(messages) 
-      
+      console.log(messages)  
     }
   }, [friendSelect,msgCount])
 
@@ -90,9 +94,15 @@ function Profile({userId}) {
 
   useEffect(() => {
 
-    axios.post(getUrl.replace("3000", "5000") + "/search", {Name: searchFriend.Name}).then((res) => {
-      console.log(searchFriend.Name)
-      setfoundList(res.data)
+    // axios.post("https://web-chat-application-1.herokuapp.com" + "/search", {Name: searchFriend.Name}).then((res) => {
+    //   console.log(searchFriend.Name)
+    //   setfoundList(res.data)
+    // })
+    socket.emit("search", {Name: searchFriend.Name})
+    socket.on("searchRes",(data)=>{
+      console.log(data)
+
+      setfoundList(data)
     })
 
     if (searchFriend.Name === "") {
@@ -105,9 +115,10 @@ function Profile({userId}) {
     setMessage] = useState("")
   let sendMessage = () => {
     setMessage("")
-    setMsgCount(msgCount+1) 
-    if (foundList) {
-      console.log("clicked")
+    setMsgCount(msgCount+1)
+    console.log(foundList) 
+    if (foundList.length > 0) {
+      console.log("hbckjhdsbckjhdsbcjh") 
       let friend_id;
       if (itemSelector.selected === "search" && foundList.length !== 0) {
         friend_id = foundList[foundSelect]._id
@@ -117,14 +128,15 @@ function Profile({userId}) {
             text: {
               author_id: id,
               value: message,
-              date: new Date
+              date: new Date()
             }
           }
         })
+        console.log("dhbjhcbdnmc")
       }
 
     }
-    if (friendList.length !== 0 && friendSelect!=-1) {
+    if (friendList.length !== 0 && friendSelect!==-1) {
       let friend_id;
       if (itemSelector.selected === "friends" && friendList.length !== 0) {
         friend_id = friendList[friendSelect]._id
@@ -134,7 +146,7 @@ function Profile({userId}) {
             text: {
               author_id: id,
               value: message,
-              date: new Date
+              date: new Date()
             }
           }
         })
@@ -146,12 +158,13 @@ function Profile({userId}) {
       msg.push(res.message.text)
       setMessages(msg)
       console.log(res) 
-    }) 
-    
+    })
+    scrollTo()
   }
 
-  function scrollTo(e){
-    console.log(e)
+  function scrollTo(){
+    const div = document.getElementById("messageField")
+    div.scrollTop = div.scrollHeight
   }
 
   
@@ -298,7 +311,7 @@ function Profile({userId}) {
 
       <section className="chatSpace">
         <div className="chatSpaceTop"></div>
-        <section className="messageField">
+        <section className="messageField" id="messageField">
           {!messagesFetched
             ? ""
             : messages.map((obj) => {
@@ -413,6 +426,7 @@ function Profile({userId}) {
               value={message}
               onChange={(e) => {
               setMessage(e.target.value)
+              require=true
             }}/>
             <button className="sendBtn" onClick={sendMessage}>
               <p>Send</p><img src={sendIcon} alt=""/></button>

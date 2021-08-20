@@ -1,25 +1,28 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
+app.use(cors({origin:"*"}))
 const bodyParser = require("body-parser")
 const {user,messages} = require("./database/db")
 const httpServer = require("http").createServer(app)
 const session = require("express-session")
 const uuid = require("uuid");
 const io = require("socket.io")(httpServer, {
-    cors:{
-        origin:"http://localhost:3000"
-    },
     path:"",
+    cors:{
+        origin: "*"
+    }
 })  
 
 io.engine.generateId = (req) => {
     return uuid.v4(); // must be unique across all Socket.IO servers
 }
 
+
+
 const PORT = process.env.PORT||5000
 
-const sessionMiddleware = session({ secret: 'keyboard cat',resave:true,saveUninitialized:true})
+const sessionMiddleware = session({ secret: 'keyboard cat',resave:true,saveUninitialized:false})
 app.use(sessionMiddleware);
 io.use((socket, next) => {
     sessionMiddleware(socket.request, {}, next);
@@ -60,7 +63,7 @@ app.post("/signup",function (req, res){
 
 
 
-app.post("/profile/:id/search", function(req,res){
+app.post("/search", function(req,res){
     let Name = req.body.Name
     user.find({Name: {$regex: new RegExp(Name,"i")}}, function (err, data){
         if(err){
@@ -93,7 +96,7 @@ io.of("profile").on("connection", (socket)=>{
         })
     })
 
-    socket.on("profile", function (Udata){
+    socket.on("user", function (Udata){
         let id = Udata.userId
         console.log(id)
         user.findOne({_id: id}, (err, data)=>{
@@ -149,6 +152,7 @@ io.of("profile").on("connection", (socket)=>{
     })
 
     socket.on("sendmsg", (req)=>{
+        console.log("sbdkjcns.kdjcnsd.cn")
         messages.findOne({"message.user1_id": req.message.text.author_id,"message.user2_id": req.message.user_id}, function(err,data){
             if(err){
                 console.log(err)
@@ -295,6 +299,21 @@ io.of("profile").on("connection", (socket)=>{
                 }
             }
         })
+    })
+
+    socket.on("search", function(req){
+        let Name = req.Name
+        user.find({Name: {$regex: new RegExp(Name,"i")}}, function (err, data){
+            if(err){
+                console.log(req.Name) 
+                res.send(err)
+            }else{
+                if(Name !=""){
+                    io.of("profile").emit("searchRes",data)
+                }
+            }
+        })
+    
     })
 
     socket.on("disconnect",()=>{
