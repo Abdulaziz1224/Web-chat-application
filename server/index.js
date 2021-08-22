@@ -59,7 +59,7 @@ app.post("/signup",function (req, res){
             }
         }
     })
-})
+}) 
 
 
 
@@ -83,6 +83,7 @@ app.post("/search", function(req,res){
 
 
 io.of("profile").on("connection", (socket)=>{
+
     socket.on("allMessages", (req)=>{
         messages.findOne({$or:[{"message.user1_id":req.user_id, "message.user2_id": req.friend_id},{"message.user2_id":req.user_id, "message.user1_id": req.friend_id}]}, function(err,data){
             if(err){
@@ -90,12 +91,14 @@ io.of("profile").on("connection", (socket)=>{
             }else{
                 if(data){
                     console.log(data)
-                    io.of("profile").emit("reciveAllMessages",data.message.text)
+                    socket.join(data.message._id)
+                    io.of("profile").to(data.message._id).emit("reciveAllMessages",data.message.text)
                 }
             }
         })
     })
 
+    socket.join(socket.id) 
     socket.on("user", function (Udata){
         let id = Udata.userId
         console.log(id)
@@ -104,11 +107,11 @@ io.of("profile").on("connection", (socket)=>{
             if(err){
                 io.of("profile").emit(err)
             }else{
-                io.of("profile").emit("profiledata",{
+                io.of("profile").to(socket.id).emit("profiledata",{
                     userData: data,
                     status: "online",
                 })
-                console.log(data)
+                console.log(socket.id)
                 if(!data){
                     console.log("topilmadi")
                 }
@@ -140,7 +143,7 @@ io.of("profile").on("connection", (socket)=>{
                                            }
                                         )
                                    })
-                                   io.of("profile").emit("getFriends", neededInfo)
+                                   io.of("profile").to(socket.id).emit("getFriends", neededInfo)
                                }
                             }
                         })

@@ -41,7 +41,7 @@ function Profile({userId}) {
   // const [friendListFetched,
   //   setFriendListFetched] = useState(false)
   const [msgCount, setMsgCount] = useState(0)
-  const [socket] = useState(socketClient("https://web-chat-application-1.herokuapp.com/profile",{
+  const [socket] = useState(socketClient("http://localhost:5000/profile",{
     path:"",
   }))
   const [id] = useState(window.location.href.slice(-24))
@@ -51,12 +51,14 @@ function Profile({userId}) {
   // })
   socket.on("connect",()=>{
     console.log("2222222222")
+    console.log(socket.id)
   }) 
   
   useEffect(() => {
     socket.on("connect",()=>{
       console.log(socket.disconnected)
     })
+    console.log(socket.id)
     socket.emit("user", {userId: id})
     socket.on("profiledata",(data)=>{
       setUser(data.userData)
