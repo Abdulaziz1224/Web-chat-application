@@ -1,0 +1,8 @@
+[[redirects]]
+from="/*"
+to="/form"
+
+
+[[redirects]]
+from="/form"
+to="/profile:id"
