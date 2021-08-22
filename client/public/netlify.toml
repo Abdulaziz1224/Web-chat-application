@@ -1,8 +1,10 @@
 [[redirects]]
 from="/*"
 to="/form"
+status=200
 
 
 [[redirects]]
 from="/form"
 to="/profile:id"
+status=200
