@@ -17,6 +17,7 @@ function Form({sendId}) {
   // https://web-chat-application-1.herokuapp.com
 
 
+  const [hide, setHide] = useState("invisiable")
   let history = useHistory()
   const [signinEmail,
     setSigninEmail] = useState("")
@@ -60,6 +61,10 @@ function Form({sendId}) {
       })
   }
 
+  let signinPage= ()=>{
+
+  }
+
   const [signin,
     setSignin] = useState(null)
   var moving = "movingWindow"
@@ -87,7 +92,8 @@ function Form({sendId}) {
 
         <div className={signin
           ? "signin"
-          : "signin signinAnime"}>
+          : "signin signinAnime"}
+          id={hide}>
           <h1>Sign in to Chat app</h1>
           <div className="BtnGroup">
             <button className="btn"><img src={facebook} alt="" className="icons"/></button>
@@ -148,6 +154,9 @@ function Form({sendId}) {
               value={regPassword}/>
           </div>
           <button className="signBtn" onClick={register}>SIGN UP</button>
+          <button className="signInBtn" onClick={signinPage}>
+            <div className="signInText" onClick={()=>setHide(hide==="visiable"?"invisiable":"visiable")}>SIGN IN</div>
+            </button>
         </div>
 
         <div className={moving}>

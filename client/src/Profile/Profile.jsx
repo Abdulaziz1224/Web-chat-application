@@ -1,6 +1,7 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
 import socketClient from "socket.io-client"
+import {v4 as uid} from "uuid"
 
 import "./Profile.css"
 import userImg from "../assets/user.png"
@@ -12,7 +13,7 @@ import sendIcon from "../assets/sendIcon.svg"
 import groupIcon from "../assets/groupIcon.svg"
 import favoriteIcon from "../assets/favoriteIcon.svg"
 
-function Profile({userId}) {
+function Profile({userId}) { 
 
   const [search,
     setSearch] = useState({display: "none"})
@@ -38,45 +39,42 @@ function Profile({userId}) {
     setMessagesFetched] = useState(false)
   const [message,
     setMessage] = useState("")
-  // const [friendListFetched,
-  //   setFriendListFetched] = useState(false)
-  const [msgCount, setMsgCount] = useState(0)
-  const [socket] = useState(socketClient("http://localhost:5000/profile",{
-    path:"",
-  }))
+  // const [friendListFetched,   setFriendListFetched] = useState(false)
+  const [socket] = useState(socketClient("https://web-chat-application-1.herokuapp.com/profile", {path: ""}))
   const [id] = useState(window.location.href.slice(-24))
- 
-  // const socket = socketClient("https://web-chat-application-1.herokuapp.com/profile",{
-  //   path:"",
-  // })
-  socket.on("connect",()=>{
+  const [msgCount, setMsgCount] = useState(0)
+
+  // const socket =
+  // socketClient("https://web-chat-application-1.herokuapp.com/profile",{
+  // path:"", })
+  socket.on("connect", () => {
     console.log("2222222222")
     console.log(socket.id)
-  }) 
-  
+  })
+
   useEffect(() => {
-    socket.on("connect",()=>{
+    socket.on("connect", () => {
       console.log(socket.disconnected)
     })
     console.log(socket.id)
     socket.emit("user", {userId: id})
-    socket.on("profiledata",(data)=>{
+    socket.on("profiledata", (data) => {
       setUser(data.userData)
       setStatus(data.status)
       console.log(data)
     })
 
-    socket.emit("friends",id)
-    socket.on("getFriends", (data)=>{
+    socket.emit("friends", id)
+    socket.on("getFriends", (data) => {
       setFriendList(data)
       // setFriendListFetched(true)
-    })    
-    
-  },[id,socket]) 
+    })
 
- 
-  useEffect(() => {
-    if (friendList.length !== 0 && friendSelect!==-1) {
+  }, [id, socket])
+
+
+  useEffect(()=>{
+    if (friendList.length !== 0 && friendSelect !== -1) {
       socket.emit("allMessages", {
         user_id: user._id,
         friend_id: friendList[friendSelect]._id
@@ -84,26 +82,21 @@ function Profile({userId}) {
       socket.on("reciveAllMessages", data => {
         setMessages(data)
         setMessagesFetched(true)
-      })
-      console.log(messages)  
+        console.log(messages)
+      })    
     }
-  }, [friendSelect,msgCount,friendList,socket,message,messages,user._id]) 
-
-  function selectFriend(index){
-    setFriendSelect(index)
-  }
+  },[friendSelect])
   
-//  ################## data fetching with socket.io ###############
 
+  //  ################## data fetching with socket.io ###############
 
   useEffect(() => {
 
-    // axios.post("https://web-chat-application-1.herokuapp.com" + "/search", {Name: searchFriend.Name}).then((res) => {
-    //   console.log(searchFriend.Name)
-    //   setfoundList(res.data)
-    // })
+    // axios.post("https://web-chat-application-1.herokuapp.com" + "/search", {Name:
+    // searchFriend.Name}).then((res) => {   console.log(searchFriend.Name)
+    // setfoundList(res.data) })
     socket.emit("search", {Name: searchFriend.Name})
-    socket.on("searchRes",(data)=>{
+    socket.on("searchRes", (data) => {
       console.log(data)
 
       setfoundList(data)
@@ -113,14 +106,14 @@ function Profile({userId}) {
       setfoundList([])
     }
 
-  }, [searchFriend.Name,socket])
+  }, [searchFriend.Name, socket])
 
   let sendMessage = () => {
     setMessage("")
     setMsgCount(msgCount+1)
-    console.log(foundList) 
+    console.log(foundList)
     if (foundList.length > 0) {
-      console.log("hbckjhdsbckjhdsbcjh") 
+      console.log("hbckjhdsbckjhdsbcjh")
       let friend_id;
       if (itemSelector.selected === "search" && foundList.length !== 0) {
         friend_id = foundList[foundSelect]._id
@@ -138,7 +131,7 @@ function Profile({userId}) {
       }
 
     }
-    if (friendList.length !== 0 && friendSelect!==-1) {
+    if (friendList.length !== 0 && friendSelect !== -1) {
       let friend_id;
       if (itemSelector.selected === "friends" && friendList.length !== 0) {
         friend_id = friendList[friendSelect]._id
@@ -152,47 +145,29 @@ function Profile({userId}) {
             }
           }
         })
-
+        let newMsg = messages
+        newMsg.push({
+          author_id: id,
+          value: message,
+          date: new Date()
+        })
+        setMessages(newMsg)
       }
     }
-    socket.on("msgSent", (res)=>{
-      let msg = messages
-      msg.push(res.message.text)
-      setMessages(msg)
-      console.log(res) 
-    })
     scrollTo()
   }
 
-  function scrollTo(){
+  function scrollTo() {
     const div = document.getElementById("messageField")
     div.scrollTop = div.scrollHeight
   }
 
-  
-
-  
-  
-
-  // useEffect(() => {
-    
-  //   if (friendList.length !== 0) {
-  //     const user_id = userId
+  // useEffect(() => {   if (friendList.length !== 0) {     const user_id = userId
   //     const friend_id = friendList[friendSelect]._id
-  //     socket.on("reciveAllMessages", data => {
-  //       console.log(data);
-  //       socket.emit("allMessages", {
-  //         user_id: user._id,
-  //         friend_id: friendList[friendSelect]._id
-  //       })
-
-  //     })
-  //   }
-
-  // }, [friendSelect])
-
-
-// ************************ data fetch end ****************** 
+  // socket.on("reciveAllMessages", data => {       console.log(data);
+  // socket.emit("allMessages", {         user_id: user._id,         friend_id:
+  // friendList[friendSelect]._id       })     })   } }, [friendSelect])
+  // ************************ data fetch end ******************
 
   return (
     <div className="container">
@@ -223,10 +198,10 @@ function Profile({userId}) {
                 key={friendList.indexOf(obj)}
                 id="friends"
                 onClick={() => {
-                  selectFriend(friendList.indexOf(obj))
-                }}>
-                <img src={userImg} alt="Profile Img" className="profileImg"/>
+                setFriendSelect(friendList.indexOf(obj))
+              }}>
                 <div className="nameAndStatus">
+                  <img src={userImg} alt="Profile Img" className="profileImg"/>
                   <h3 className="name">{obj.Name}</h3>
                   <p className="lastMessage"></p>
                 </div>
@@ -273,7 +248,7 @@ function Profile({userId}) {
                 </div>
               )
             }
-            return("")
+            return ("")
           })
 }
         </div>
@@ -319,59 +294,58 @@ function Profile({userId}) {
             ? ""
             : messages.map((obj) => {
               if (obj.author_id === user._id && messagesFetched) {
-                  return (messages.indexOf(obj) === 0
-                    ? <div className="myMessage" id="myItems" key={obj._id}>
-                        <h4 className="myName">
-                          {user.Name}
-                          <div className="myNameRight"></div>
-                        </h4>
-                        <div className="imgAndMsgBox">
-                          <div className="msgContainer" id="msgContainer">
-                            <div className="msgBox">
-                              <p className="msg">
-                                {obj.value}
-                              </p>
-                              <p className="msgDate">15:30</p>
-                            </div>
+                return (messages.indexOf(obj) === 0
+                  ? <div className="myMessage" id="myItems" key={uid()}>
+                      <h4 className="myName">
+                        {user.Name}
+                        <div className="myNameRight"></div>
+                      </h4>
+                      <div className="imgAndMsgBox">
+                        <div className="msgContainer" id="msgContainer">
+                          <div className="msgBox">
+                            <p className="msg">
+                              {obj.value}
+                            </p>
+                            <p className="msgDate">15:30</p>
                           </div>
-                          <div className="imgBox">
-                            <img src={userImg} alt=""/>
+                        </div>
+                        <div className="imgBox">
+                          <img src={userImg} alt=""/>
+                        </div>
+                      </div>
+                    </div>
+
+                  : (messages[(messages.indexOf(obj)) - 1].author_id === obj.author_id)
+                    ? <div id="nextMsg" key={uid()}>
+                        <div className="msgContainer">
+                          <div className="msgBox">
+                            <p className="msg">
+                              {obj.value}
+                            </p>
+                            <p className="msgDate">15:30</p>
                           </div>
                         </div>
                       </div>
 
-                    : (messages[(messages.indexOf(obj)) - 1].author_id === obj.author_id)
-                      ? <div id="nextMsg" key={obj._id}>
-                          <div className="msgContainer">
-                            <div className="msgBox">
-                              <p className="msg">
-                                {obj.value}
-                              </p>
-                              <p className="msgDate">15:30</p>
-                            </div>
+                    : <div className="myMessage" id="myItems" key={uid()}>
+                      <h4 className="myName">
+                        {user.Name}
+                        <div className="myNameRight"></div>
+                      </h4>
+                      <div className="imgAndMsgBox">
+                        <div className="msgContainer" id="msgContainer">
+                          <div className="msgBox">
+                            <p className="msg">
+                              {obj.value}
+                            </p>
+                            <p className="msgDate">15:30</p>
                           </div>
                         </div>
-
-                      : <div className="myMessage" id="myItems"  key={obj._id}>
-                        <h4 className="myName">
-                          {user.Name}
-                          <div className="myNameRight"></div>
-                        </h4>
-                        <div className="imgAndMsgBox">
-                          <div className="msgContainer" id="msgContainer">
-                            <div className="msgBox">
-                              <p className="msg">
-                                {obj.value}
-                              </p>
-                              <p className="msgDate">15:30</p>
-                            </div>
-                          </div>
-                          <div className="imgBox">
-                            <img src={userImg} alt=""/>
-                          </div>
+                        <div className="imgBox">
+                          <img src={userImg} alt=""/>
                         </div>
                       </div>
-                  )
+                    </div>)
 
               } else {
                 if (messagesFetched && messages.length > 0) {
@@ -379,7 +353,7 @@ function Profile({userId}) {
                   return (messages.indexOf(obj) === 0
                     ? ""
                     : messages[messages.indexOf(obj) - 1].author_id === obj.author_id
-                      ? <div className="msgContainer" id='friendNextMsg'  key={obj._id}>
+                      ? <div className="msgContainer" id='friendNextMsg' key={obj._id}>
                           <div className="msgBox">
                             <p className="msg">
                               {obj.value}
@@ -409,7 +383,7 @@ function Profile({userId}) {
                 }
 
               }
-              return("")
+              return ("")
             })}
 
         </section>

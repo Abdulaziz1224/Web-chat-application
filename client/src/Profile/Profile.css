@@ -127,6 +127,7 @@
 #friends {
   cursor: pointer;
   display: flex;
+  justify-content: space-between;
   margin-bottom: 2.083vw;
   width: 18.146vw;
   height: 3.854vw;
@@ -150,6 +151,10 @@
 
 #friends .statusView {
   margin: 0;
+}
+
+.nameAndStatus{
+  display: flex;
 }
 
 .selected {
@@ -190,6 +195,7 @@
   flex-direction: column;
   align-items: flex-end;
   margin-top: 1.146vw;
+  margin-right: 1vw;
 }
 
 .date {
