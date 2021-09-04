@@ -506,9 +506,6 @@ h4 {
   .FormContainer{
     transform-style: preserve-3d;
     background-color: transparent;
-    transform: rotateY(360deg);
-    perspective: 1000px;
-    perspective-origin: 10%;
   }
   .signin, .signup{
     background-color: #fff;
@@ -517,15 +514,22 @@ h4 {
     height: 100%;
     top: 0;
     backface-visibility: hidden;
+    transition: 2s ease-in-out;
+    transform: perspective(700px) rotateY(0deg);
   }
+  
   .signin{
-    position: absolute;
-    transform: rotateY(270deg) translateX(-150px);
-    transform-origin: 0 50%;
+    transform: perspective(700px) rotateY(180deg);
   }
-  .signup{
-    transform: translateZ(150px);
+
+  .signin.rotate{
+    transform: perspective(700px) rotateY(360deg);
   }
+  .signup.rotate{
+    transform: perspective(700px) rotateY(180deg);
+  }
+  
+
   /* #visiable{
     display: flex;
   }
@@ -535,12 +539,17 @@ h4 {
   .movingWindow{
     display: none;
   }
-  .signup h1 {
+  .signup h1,.signin h1 {
     width: 100%;
     text-align: center;
     font-size: 30px;
     margin-bottom: 15px;
   }
+
+  .signin h4 {
+    font-size: 14px;
+  }
+
   .BtnGroup{
     margin-bottom: 2vw;
   }
@@ -576,7 +585,7 @@ h4 {
     margin-right: 5px;
     font-size: 14px;
   }
-  .signInBtn{
+  .signInBtn, .signupBtn{
     display: block;
     width: 35%;
     margin-right: 5px;

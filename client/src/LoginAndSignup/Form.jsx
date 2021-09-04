@@ -17,6 +17,7 @@ function Form({sendId}) {
   // https://web-chat-application-1.herokuapp.com
 
 
+  const [rotate, setRotate] = useState("")
   const [hide, setHide] = useState("invisiable")
   let history = useHistory()
   const [signinEmail,
@@ -91,8 +92,8 @@ function Form({sendId}) {
       <div className="FormContainer">
 
         <div className={signin
-          ? "signin"
-          : "signin signinAnime"}
+          ? "signin"+rotate
+          : "signin signinAnime"+rotate}
           id={hide}>
           <h1>Sign in to Chat app</h1>
           <div className="BtnGroup">
@@ -120,9 +121,12 @@ function Form({sendId}) {
           <h4>Forgot your password?</h4>
           <span className="shadow"></span>
           <button className="signBtn" onClick={enter}>SIGN IN</button>
+          <button className="signupBtn" onClick={()=>setRotate("")}>
+            <div className="signInText" onClick={()=>setRotate("")}>SIGN UP</div>
+          </button>
         </div>
 
-        <div className="signup">
+        <div className={"signup"+rotate}>
           <h1>Create Account</h1>
           <div className="BtnGroup">
             <button className="btn"><img src={facebook} alt="" className="icons"/></button>
@@ -155,7 +159,7 @@ function Form({sendId}) {
           </div>
           <button className="signBtn" onClick={register}>SIGN UP</button>
           <button className="signInBtn" onClick={signinPage}>
-            <div className="signInText" onClick={()=>setHide(hide==="visiable"?"invisiable":"visiable")}>SIGN IN</div>
+            <div className="signInText" onClick={()=>setRotate(rotate===" rotate"?"":" rotate")}>SIGN IN</div>
             </button>
         </div>
 

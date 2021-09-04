@@ -154,8 +154,11 @@ function Profile({userId}) {
         setMessages(newMsg)
       }
     }
-    scrollTo()
   }
+
+  useEffect(() => {
+    scrollTo()
+  }, [messages])
 
   function scrollTo() {
     const div = document.getElementById("messageField")
