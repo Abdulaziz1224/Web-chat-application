@@ -497,12 +497,12 @@ h4 {
   }
 }
 
-.signInBtn{
+.signInBtn, .signupBtn{
   display: none;
 }
 
 
-@media screen and (max-width: 640px){
+@media (max-width: 640px){
   .FormContainer{
     transform-style: preserve-3d;
     background-color: transparent;
@@ -514,19 +514,29 @@ h4 {
     height: 100%;
     top: 0;
     backface-visibility: hidden;
-    transition: 2s ease-in-out;
     transform: perspective(700px) rotateY(0deg);
+    transition: 2s ease-in-out;
   }
   
+
   .signin{
     transform: perspective(700px) rotateY(180deg);
   }
 
+  .signin.noRotate{
+    transition: 0s;
+  }
+  .signup.noRotate{
+    transition: 0s;
+  }
+
   .signin.rotate{
     transform: perspective(700px) rotateY(360deg);
+    transition: 2s ease-in-out;
   }
   .signup.rotate{
     transform: perspective(700px) rotateY(180deg);
+    transition: 2s ease-in-out;
   }
   
 

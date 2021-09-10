@@ -12,6 +12,7 @@ import voiceIcon from "../assets/voiceIcon.svg"
 import sendIcon from "../assets/sendIcon.svg"
 import groupIcon from "../assets/groupIcon.svg"
 import favoriteIcon from "../assets/favoriteIcon.svg"
+let transientImg = "https://picsum.photos/200"
 
 function Profile({userId}) { 
 
@@ -43,6 +44,19 @@ function Profile({userId}) {
   const [socket] = useState(socketClient("https://web-chat-application-1.herokuapp.com/profile", {path: ""}))
   const [id] = useState(window.location.href.slice(-24))
   const [msgCount, setMsgCount] = useState(0)
+
+  const gradients = [
+    "linear-gradient(white, white), linear-gradient(to right, #c6ffdd, #fbd786, #f7797d)",
+    "linear-gradient(white, white), linear-gradient(to right, #12c2e9, #c471ed, #f64f59)",
+    "linear-gradient(white, white), linear-gradient(to right, #b92b27, #1565c0)",
+    "linear-gradient(white, white), linear-gradient(to right, #2980b9, #6dd5fa, #ffffff)",
+    "linear-gradient(white, white), linear-gradient(to right, #ff0099, #493240)",
+    "linear-gradient(white, white), linear-gradient(to right, #8e2de2, #4a00e0)",
+    "linear-gradient(white, white), linear-gradient(to right, #f953c6, #b91d73)",
+    "linear-gradient(white, white), linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4)",
+    "linear-gradient(white, white), linear-gradient(to right, #c31432, #240b36)",
+    "linear-gradient(white, white), linear-gradient(to right, #f12711, #f5af19)",
+  ]
 
   // const socket =
   // socketClient("https://web-chat-application-1.herokuapp.com/profile",{
@@ -165,6 +179,11 @@ function Profile({userId}) {
     div.scrollTop = div.scrollHeight
   }
 
+  function randomGradient() {
+    // return {backgroundImage: "linear-gradient(white, white), linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4)"}
+    return {backgroundImage: gradients[Math.floor(Math.random()*10)]}
+  }
+
   // useEffect(() => {   if (friendList.length !== 0) {     const user_id = userId
   //     const friend_id = friendList[friendSelect]._id
   // socket.on("reciveAllMessages", data => {       console.log(data);
@@ -176,8 +195,8 @@ function Profile({userId}) {
     <div className="container">
       <div className="listContainer">
         <section className="user">
-          <img src={userImg} alt="" className="profileImg"/>
           <div className="nameAndStatus">
+            <img src={transientImg} alt="" className="profileImg" style={randomGradient()}/>
             <h3 className="name">{user.Name}</h3>
             <div className="statusView">
               <span className="statusDot"></span>
@@ -204,7 +223,7 @@ function Profile({userId}) {
                 setFriendSelect(friendList.indexOf(obj))
               }}>
                 <div className="nameAndStatus">
-                  <img src={userImg} alt="Profile Img" className="profileImg"/>
+                  <img src={transientImg} alt="Profile Img" className="profileImg" style={randomGradient()}/>
                   <h3 className="name">{obj.Name}</h3>
                   <p className="lastMessage"></p>
                 </div>
@@ -236,7 +255,7 @@ function Profile({userId}) {
                   onClick={() => {
                   setFoundSelect(foundList.indexOf(obj))
                 }}>
-                  <img src={obj.imageUrl} alt="Profile Img" className="profileImg"/>
+                  <img src={obj.imageUrl} alt="Profile Img" className="profileImg" style={randomGradient()}/> 
                   <div className="nameAndStatus">
                     <h3 className="name">{obj.Name}</h3>
                     <p className="lastMessage"></p>
@@ -284,14 +303,15 @@ function Profile({userId}) {
         </div>
       </div>
 
-      <div className="chatAndMedia">
-        <button className="chatBtn">Chat</button>
-        <button className="mediaBtn">Media</button>
-        <span className="chatAndMediaSelector"></span>
-      </div>
 
       <section className="chatSpace">
-        <div className="chatSpaceTop"></div>
+        <div className="chatSpaceTop">
+          <div className="chatAndMedia">
+            <button className="chatBtn">Chat</button>
+            <button className="mediaBtn">Media</button>
+            <span className="chatAndMediaSelector"></span>
+          </div>
+        </div>
         <section className="messageField" id="messageField">
           {!messagesFetched
             ? ""

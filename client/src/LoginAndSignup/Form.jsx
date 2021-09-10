@@ -17,7 +17,7 @@ function Form({sendId}) {
   // https://web-chat-application-1.herokuapp.com
 
 
-  const [rotate, setRotate] = useState("")
+  const [rotate, setRotate] = useState(" noRotate")
   const [hide, setHide] = useState("invisiable")
   let history = useHistory()
   const [signinEmail,
@@ -159,7 +159,7 @@ function Form({sendId}) {
           </div>
           <button className="signBtn" onClick={register}>SIGN UP</button>
           <button className="signInBtn" onClick={signinPage}>
-            <div className="signInText" onClick={()=>setRotate(rotate===" rotate"?"":" rotate")}>SIGN IN</div>
+            <div className="signInText" onClick={()=>setRotate(" rotate")}>SIGN IN</div>
             </button>
         </div>
 
